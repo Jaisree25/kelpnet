@@ -1,0 +1,13 @@
+# Earth Engine scripts — run these in the Earth Engine Code Editor, not here
+earth-engine/scripts/
+
+# Raw unprocessed data
+data/raw/
+
+# OS
+.DS_Store
+desktop.ini
+desktop.yml
+
+# Editor
+.vscode/
