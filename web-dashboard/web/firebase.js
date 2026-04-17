@@ -21,7 +21,7 @@ function initFirebase() {
 
         useFirebase = true;
 
-        console.log("🔥 Firebase connected");
+        console.log("Firebase connected");
 
         subscribeToSites();
 
@@ -55,9 +55,8 @@ function subscribeToSites(callback) {
             };
         });
 
-        console.log("🔥 Firebase update:", sites.length);
+        console.log("Firebase update:", sites.length);
 
-        // ✅ THIS is what was breaking
         if (typeof callback === "function") {
             callback(sites);
         }
