@@ -1,4 +1,7 @@
-# Earth Engine scripts — run these in the Earth Engine Code Editor, not here
+lib/firebase_config.dart
+ios/Runner/GoogleService-Info.plist
+
+# Earth Engine scripts
 earth-engine/scripts/
 
 # Raw unprocessed data
@@ -11,3 +14,43 @@ desktop.yml
 
 # Editor
 .vscode/
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
