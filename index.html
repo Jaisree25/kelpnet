@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>KelpNet - Dive Site Monitor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FIX: keep stylesheet path consistent with root index.html -->
+    <link rel="stylesheet" href="./web-dashboard/web/styles.css">
+
+    <!-- Firebase compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon"></div>
+        KELPNET
+    </div>
+
+    <div class="header-center">
+        <button class="tab-btn active" onclick="switchView('map')">Map View</button>
+        <button class="tab-btn" onclick="switchView('priority')">Priority List</button>
+    </div>
+
+    <div class="header-right">
+        <span class="site-count" id="site-count">- sites</span>
+        <div class="live-badge">
+            <div class="live-dot"></div> LIVE
+        </div>
+    </div>
+</header>
+
+<div class="config-banner" id="config-banner">
+    Firebase configuration is missing. Please set up your firebaseConfig in firebase-config.js to load data.
+</div>
+
+<div class="main">
+
+    <!-- MAP VIEW -->
+    <div class="view active" id="view-map">
+
+        <div class="map-placeholder" id="map-placeholder">
+            <div class="map-grid"></div>
+            <div class="map-notice">
+                <h3>GOOGLE MAPS API KEY REQUIRED</h3>
+                <p>Add your API key in config.js</p>
+            </div>
+        </div>
+
+        <div id="map" style="display:none;"></div>
+
+        <button class="fab" onclick="openAddSiteModal()">+ ADD SITE</button>
+
+        <div class="side-panel">
+            <div class="panel-header">
+                <div class="panel-title">Site Details</div>
+                <div class="panel-subtitle" id="panel-subtitle">Select a marker</div>
+            </div>
+            <div id="site-detail"></div>
+        </div>
+    </div>
+
+    <!-- PRIORITY VIEW -->
+    <div class="view" id="view-priority">
+
+        <div class="priority-header">
+            <h2>CREW PRIORITY LIST</h2>
+
+            <button class="fab" style="position:static" onclick="openAddSiteModal()">
+                + ADD SITE
+            </button>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card"><div id="stat-critical">0</div></div>
+            <div class="stat-card"><div id="stat-warning">0</div></div>
+            <div class="stat-card"><div id="stat-clear">0</div></div>
+            <div class="stat-card"><div id="stat-survey">0</div></div>
+        </div>
+
+        <div class="priority-list" id="priority-list"></div>
+
+    </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="add-modal">
+    <div class="modal">
+        <div class="modal-title">REGISTER NEW SITE</div>
+
+        <input id="f-name" placeholder="Site name"/>
+        <input id="f-lat" placeholder="Latitude"/>
+        <input id="f-lng" placeholder="Longitude"/>
+
+        <select id="f-status">
+            <option value="survey">Survey</option>
+            <option value="clear">Clear</option>
+            <option value="warning">Warning</option>
+            <option value="critical">Critical</option>
+        </select>
+
+        <input id="f-depth" placeholder="Depth"/>
+        <textarea id="f-notes" placeholder="Notes"></textarea>
+
+        <div class="modal-actions">
+            <button onclick="closeModal()">CANCEL</button>
+            <button onclick="submitSite()">SAVE</button>
+        </div>
+    </div>
+</div>
+
+<div id="toasts" class="toast-container"></div>
+
+<!-- IMPORTANT: script order must be correct -->
+<script src="./web-dashboard/web/firebase-config.js"></script>
+<script src="./web-dashboard/web/firebase.js"></script>
+<script src="./web-dashboard/web/app.js"></script>
+</body>
+</html>
