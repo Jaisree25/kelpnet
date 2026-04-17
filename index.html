@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <!-- FIX: keep stylesheet path consistent with root index.html -->
     <link rel="stylesheet" href="./web-dashboard/web/styles.css">
 
     <!-- Firebase compat -->
@@ -38,7 +37,7 @@
 </header>
 
 <div class="config-banner" id="config-banner">
-    Firebase configuration is missing. Please set up your firebaseConfig in firebase-config.js to load data.
+    Firebase configuration is missing.
 </div>
 
 <div class="main">
@@ -50,7 +49,6 @@
             <div class="map-grid"></div>
             <div class="map-notice">
                 <h3>GOOGLE MAPS API KEY REQUIRED</h3>
-                <p>Add your API key in config.js</p>
             </div>
         </div>
 
@@ -78,14 +76,32 @@
             </button>
         </div>
 
-        <div class="stats-bar">
-            <div class="stat-card"><div id="stat-critical">0</div></div>
-            <div class="stat-card"><div id="stat-warning">0</div></div>
-            <div class="stat-card"><div id="stat-clear">0</div></div>
-            <div class="stat-card"><div id="stat-survey">0</div></div>
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="setFilter('all')">All</button>
+            <button class="filter-btn" onclick="setFilter('critical')">Critical</button>
+            <button class="filter-btn" onclick="setFilter('warning')">Warning</button>  
+            <button class="filter-btn" onclick="setFilter('clear')">Clear</button>
+            <button class="filter-btn" onclick="setFilter('survey')">Survey</button>
         </div>
 
         <div class="priority-list" id="priority-list"></div>
+
+        <!-- SITE DETAIL MODAL -->
+        <div class="modal-overlay" id="detail-modal" style="display:none">
+            <div class="modal">
+                <div class="modal-title" id="detail-name">Site Name</div>
+
+                <div class="detail-row"><span>Status</span><span id="detail-status">—</span></div>
+                <div class="detail-row"><span>Lat</span><span id="detail-lat">—</span></div>
+                <div class="detail-row"><span>Lng</span><span id="detail-lng">—</span></div>
+                <div class="detail-row"><span>Depth</span><span id="detail-depth">—</span></div>
+                <div class="detail-row"><span>Notes</span><span id="detail-notes">—</span></div>
+
+                <div class="modal-actions">
+                    <button onclick="closeDetailModal()">CLOSE</button>
+                </div>
+            </div>
+        </div>
 
     </div>
 

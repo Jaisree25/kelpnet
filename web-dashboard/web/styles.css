@@ -360,11 +360,10 @@
   .detail-row {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 5px 0;
-    font-size: 13px;
-    gap: 8px;
-  }
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+}
   .detail-row .key { color: var(--text-muted); flex-shrink: 0; }
   .detail-row .val { color: var(--text-primary); text-align: right; font-weight: 500; }
  
@@ -510,7 +509,26 @@
     color: var(--biolume);
     background: var(--biolume-dim);
   }
- 
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .filter-btn {
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .filter-btn-active {
+    background: white;
+    color: black;
+  }
   .priority-list {
     display: flex;
     flex-direction: column;
@@ -614,11 +632,11 @@
     flex-shrink: 0;
   }
   .action-btn:hover { background: rgba(0,229,192,0.25); }
-  .action-btn.done-btn {
-    border-color: rgba(46,213,115,0.4);
-    background: rgba(46,213,115,0.08);
-    color: var(--alert-green);
-  }
+.action-btn.action-done {
+    background: #34C759;
+    border-color: #34C759;
+    color: black;
+}
  
   /* ─── STATS BAR ─── */
   .stats-bar {

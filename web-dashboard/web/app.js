@@ -2,6 +2,7 @@ let sites = [];
 let selectedSiteId = null;
 let googleMap = null;
 let mapMarkers = {};
+let activeFilter = "all";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -21,17 +22,58 @@ window.initMap = function initMap() {
     console.log("Google Maps loaded");
 
     googleMap = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 36.6, lng: -121.9 }, // Monterey Bay
+        center: { lat: 36.6, lng: -121.9 },
         zoom: 9,
-        mapTypeId: "satellite"
+        mapTypeId: "satellite",
+        mapId: "YOUR_MAP_ID" // required for AdvancedMarkerElement
     });
 
-    // switch UI from placeholder → real map
     document.getElementById("map-placeholder").style.display = "none";
     document.getElementById("map").style.display = "block";
 
     renderMapMarkers();
 };
+
+const STATUS_COLORS = {
+    critical: "#FF3B30",
+    warning: "#FF9500",
+    clear: "#34C759",
+    survey: "#8E8E93"
+};
+
+function createMarkerSVG(color) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="${color}" stroke="#fff" stroke-width="2"/>
+</svg>`;
+    const div = document.createElement("div");
+    div.innerHTML = svg;
+    return div;
+}
+
+function renderMapMarkers() {
+    if (!googleMap) return;
+
+    Object.values(mapMarkers).forEach(m => m.map = null);
+    mapMarkers = {};
+
+    sites.forEach(site => {
+        if (site.lat == null || site.lng == null) return;
+
+        const color = STATUS_COLORS[site.status] || STATUS_COLORS.survey;
+
+
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+            position: { lat: site.lat, lng: site.lng },
+            map: googleMap,
+            title: site.name,
+            content: createMarkerSVG(color)
+        });
+
+        marker.addListener("click", () => selectSite(site.id));
+
+        mapMarkers[site.id] = marker;
+    });
+}
 
 
 function renderAll() {
@@ -57,64 +99,84 @@ function updateStats() {
     });
 }
 
+function setFilter(status) {
+    activeFilter = status;
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.status === status);
+    });
+
+    renderPriorityList();
+}
+
+
 function renderPriorityList() {
     const container = document.getElementById("priority-list");
     if (!container) return;
 
-    container.innerHTML = sites.map(s => `
-        <div class="priority-card" onclick="selectSite('${s.id}')">
+    const filtered = activeFilter === "all" ? sites : sites.filter(s => s.status === activeFilter);
+
+    container.innerHTML = filtered.map(s => `
+        <div class="priority-card" onclick="selectSiteFromList('${s.id}')">
             <div class="priority-site">
                 ${s.name || "Unnamed Site"}
             </div>
+            <button 
+                class="action-btn ${s.action_done ? "action-done" : ""}"
+                onclick="toggleActionDone('${s.id}', event)">
+                ${s.action_done ? "Undo Done" : "Mark  Done"}
+            </button>
         </div>
     `).join("");
 }
 
-/* =========================
-   MAP MARKERS
-========================= */
+function toggleActionDone(siteId, event) {
+    event.stopPropagation();
 
-function renderMapMarkers() {
-    if (!googleMap) return;
+    const site = sites.find(s => s.id === siteId);
+    if (!site) return;
 
-    Object.values(mapMarkers).forEach(m => m.setMap(null));
-    mapMarkers = {};
-
-    sites.forEach(site => {
-        if (site.lat == null || site.lng == null) return;
-
-        const marker = new google.maps.Marker({
-            position: { lat: site.lat, lng: site.lng },
-            map: googleMap,
-            title: site.name
-        });
-
-        marker.addListener("click", () => selectSite(site.id));
-
-        mapMarkers[site.id] = marker;
+    db.collection("sites").doc(siteId).update({
+        action_done: !site.action_done,
+        last_updated: new Date()
     });
-}
 
-/* =========================
-   SITE SELECTION
-========================= */
+    toast(site.action_done ? "Action unmarked" : "Action marked as done");
+}
 
 function selectSite(id) {
     selectedSiteId = id;
-
     const site = sites.find(s => s.id === id);
+    if (!site) return;
 
-    console.log("Selected site:", site);
-
-    const title = document.getElementById("panel-subtitle");
-    if (title) title.textContent = site?.name || "";
+    // Pan map to selected site
+    if (googleMap && site.lat != null && site.lng != null) {
+        googleMap.panTo({ lat: site.lat, lng: site.lng });
+    }
 
     renderSiteDetail(site);
 }
 
-/* =========================
-   SITE DETAIL PANEL
-========================= */
+function selectSiteFromList(id) {
+    selectSite(id);
+
+    // Show detail modal when coming from priority list
+    const site = sites.find(s => s.id === id);
+    if (!site) return;
+
+    document.getElementById("detail-name").textContent = site.name || "Unnamed Site";
+    document.getElementById("detail-status").textContent = site.status || "—";
+    document.getElementById("detail-lat").textContent = site.lat?.toFixed(5) ?? "—";
+    document.getElementById("detail-lng").textContent = site.lng?.toFixed(5) ?? "—";
+    document.getElementById("detail-depth").textContent = site.depth_m ?? "—";
+    document.getElementById("detail-notes").textContent = site.notes || "—";
+
+    document.getElementById("detail-modal").style.display = "flex";
+}
+
+function closeDetailModal() {
+    document.getElementById("detail-modal").style.display = "none";
+}
 
 function renderSiteDetail(site) {
     const container = document.getElementById("site-detail");
@@ -231,3 +293,4 @@ window.selectSite = selectSite;
 window.openAddSiteModal = openAddSiteModal;
 window.closeModal = closeModal;
 window.submitSite = submitSite;
+window.setFilter = setFilter;
