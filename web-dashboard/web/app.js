@@ -5,12 +5,12 @@ let mapMarkers = {};
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("🔥 APP LOADED");
+    console.log("APP LOADED");
 
     initFirebase();
 
     subscribeToSites((firebaseSites) => {
-        console.log("🔥 Firebase update:", firebaseSites.length);
+        console.log("Firebase update:", firebaseSites.length);
 
         sites = firebaseSites;
         renderAll();
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.initMap = function initMap() {
-    console.log("🗺️ Google Maps loaded");
+    console.log("Google Maps loaded");
 
     googleMap = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 36.6, lng: -121.9 }, // Monterey Bay
@@ -42,7 +42,6 @@ function renderAll() {
     const el = document.getElementById("site-count");
     if (el) el.textContent = `${sites.length} sites`;
 
-    // 🔥 IMPORTANT: re-render selected site after updates
     if (selectedSiteId) {
         const site = sites.find(s => s.id === selectedSiteId);
         renderSiteDetail(site);
