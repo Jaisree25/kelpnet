@@ -1,5 +1,6 @@
 lib/firebase_config.dart
 ios/Runner/GoogleService-Info.plist
+web-dashboard/web/firebase-config.js
 
 # Earth Engine scripts
 earth-engine/scripts/
