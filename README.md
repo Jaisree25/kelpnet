@@ -1,4 +1,5 @@
-# KelpNet - Flutter Mobile App
+## KelpNet 
+# Flutter Mobile App
 
 A community-powered kelp forest restoration platform that connects satellite data, divers, and restoration crews to bring back Monterey Bay's disappearing kelp ecosystems.
 
@@ -52,15 +53,8 @@ const firebaseOptions = FirebaseOptions(
   projectId: 'your-project-id',
 );
 ```
-
 4. Add your Google Maps API key to `ios/Runner/AppDelegate.swift`
 5. Run `flutter run`
-
-## Important Security Notes
-
-- Never commit `lib/firebase_config.dart` - it is in `.gitignore`
-- Never commit `ios/Runner/GoogleService-Info.plist` - it is in `.gitignore`
-- Restrict your Google Maps API key to your bundle ID in Google Cloud Console
 
 ## Features Built
 
