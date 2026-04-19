@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     loadSites();
   }
 
-  Future<void> loadSites() async {
+Future<void> loadSites() async {
     final snapshot =
         await FirebaseFirestore.instance.collection('sites').get();
 
@@ -54,40 +54,43 @@ class _HomeScreenState extends State<HomeScreen> {
     for (var doc in snapshot.docs) {
       final data = doc.data();
       final location = data['location'];
+      if (location == null) continue;
       final lat = location['lat'];
       final lng = location['lng'];
-      final status = data['status'] ?? 0;
+      if (lat == null || lng == null) continue;
+      final status = (data['status'] ?? 'survey').toString();
 
       BitmapDescriptor icon;
-      if (status == 0) {
-        icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
-      } else if (status == 1) {
-        icon =
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
-      } else {
-        icon =
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
-      }
-
+      if (status == 'critical') {
+      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+    } else if (status == 'warning') {
+      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+    } else if (status == 'clear') {
+      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+    } else {
+      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+    }
       newMarkers.add(Marker(
         markerId: MarkerId(doc.id),
         position: LatLng(lat, lng),
         icon: icon,
         infoWindow: InfoWindow(
           title: 'Site ${doc.id}',
-          snippet: status == 0
+          snippet: status == 'critical'
               ? 'Critical'
-              : status == 1
-                  ? 'Recovering'
-                  : 'Healthy',
+              : status == 'warning'
+                  ? 'Warning'
+                  : status == 'clear'
+                      ? 'Clear'
+                      : 'Survey',
           onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ReportFormScreen(siteId: doc.id),
-      ),
-    );
-  },
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ReportFormScreen(siteId: doc.id),
+              ),
+            );
+          },
         ),
       ));
     }

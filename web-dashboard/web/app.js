@@ -155,6 +155,7 @@ function selectSite(id) {
     }
 
     renderSiteDetail(site);
+    loadReportsForSite(id);
 }
 
 function selectSiteFromList(id) {
@@ -287,7 +288,35 @@ function toast(msg) {
     }, 3000);
 }
 
+function loadReportsForSite(siteId) {
+    if (!db) return;
+    
+    db.collection("sites")
+        .doc(siteId)
+        .collection("reports")
+        .orderBy("timestamp", "desc")
+        .limit(10)
+        .onSnapshot((snapshot) => {
+            const reports = snapshot.docs.map(doc => {
+                const r = doc.data();
+                return {
+                    diver: r.diverId || "Anonymous Diver",
+                    time: r.timestamp?.toDate?.()?.toLocaleString() || "",
+                    notes: `Urchin density: ${r.urchinDensity || "—"} | Kelp present: ${r.kelpPresent ? "Yes" : "No"}`,
+                    lat: r.latitude,
+                    lng: r.longitude
+                };
+            });
 
+            const site = sites.find(s => s.id === siteId);
+            if (site) {
+                site.reports = reports;
+                renderSiteDetail(site);
+            }
+        });
+}
+
+window.loadReportsForSite = loadReportsForSite;
 window.switchView = switchView;
 window.selectSite = selectSite;
 window.openAddSiteModal = openAddSiteModal;
