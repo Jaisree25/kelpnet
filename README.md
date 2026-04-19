@@ -78,8 +78,8 @@ const firebaseOptions = FirebaseOptions(
 
 ## Features In Progress
 
-- Photo upload to Firebase Storage (requires Blaze plan)
-- Push notifications (requires Apple Developer account)
+- Photo upload to Firebase Storage
+- Push notifications 
 
 ## Team
 
