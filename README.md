@@ -1,6 +1,6 @@
-# kelpnet
+# KelpNet - Flutter Mobile App
 
-A new Flutter project.
+A community-powered kelp forest restoration platform that connects satellite data, divers, and restoration crews to bring back Monterey Bay's disappearing kelp ecosystems.
 
 ## Getting Started
 
@@ -15,11 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-
-____________
-# KelpNet - Flutter Mobile App
-
-A community-powered kelp forest restoration platform that connects satellite data, divers, and restoration crews to bring back Monterey Bay's disappearing kelp ecosystems.
 
 ## What This App Does
 
