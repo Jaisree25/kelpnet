@@ -68,14 +68,14 @@ Future<void> loadSites() async {
     } else if (status == 'clear') {
       icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
     } else {
-      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
     }
       newMarkers.add(Marker(
         markerId: MarkerId(doc.id),
         position: LatLng(lat, lng),
         icon: icon,
         infoWindow: InfoWindow(
-          title: 'Site ${doc.id}',
+          title: data['name'] ?? 'Site ${doc.id}',
           snippet: status == 'critical'
               ? 'Critical'
               : status == 'warning'
