@@ -1,5 +1,5 @@
-## KelpNet 
-# Flutter Mobile App
+# KelpNet 
+## Flutter Mobile App
 
 A community-powered kelp forest restoration platform that connects satellite data, divers, and restoration crews to bring back Monterey Bay's disappearing kelp ecosystems.
 
