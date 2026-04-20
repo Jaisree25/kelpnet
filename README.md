@@ -68,7 +68,8 @@ const firebaseOptions = FirebaseOptions(
 ## Features In Progress
 
 - Photo upload to Firebase Storage
-- Push notifications 
+- Push notifications
+- Integrate Vertex AI
 
 ## Team
 
