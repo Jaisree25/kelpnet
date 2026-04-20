@@ -72,13 +72,6 @@ const firebaseOptions = FirebaseOptions(
 3. Run `python3 -m http.server 8000` from the root folder
 4. Open `http://localhost:8000` in Chrome
 
-## Security Notes
-
-Never commit these files — they are in `.gitignore`:
-- `lib/firebase_config.dart`
-- `ios/Runner/GoogleService-Info.plist`
-- `web-dashboard/web/firebase-config.js`
-
 ## Features Built
 
 - Live Google Maps with color-coded kelp site pins
